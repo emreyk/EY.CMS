@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewData["Title"] = "SignUp";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+<div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card mb-4">
+        <h6 class="card-header">Ekle</h6>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="form-label">Kullanıcı Adı</label>
+                    <input type="text" class="form-control" id="UserName">
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="form-label">Email</label>
+                    <input type="text" class="form-control" id="Email">
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+             <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="form-label">Şifre</label>
+                    <input  type="password" class="form-control" id="Password">
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <button type="button" onclick="UserAdded()" class="btn btn-primary">Kaydet</button>
+            <a href="/admin/role/signup" class="btn btn-primary">Geri</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function UserAdded() {
+
+        var UserName = $("#UserName").val();
+        var Email = $("#Email").val();
+        var Password = $("#Password").val();
+
+        if (UserName == "") {
+            Notify("Kullanıcı adını giriniz", "error");
+            return;
+        } 
+        
+        if (Email == "") {
+            Notify("Email giriniz", "error");
+            return;
+        } 
+        
+        if (Password == "") {
+            Notify("Şifre giriniz", "error");
+            return;
+        }
+
+        else {
+            const data = {
+                UserName,
+                Email,
+                Password
+            }
+
+            $.ajax({
+                url: "/admin/Role/SignUp",
+                type: "POST",
+                data: data
+            }).then(function (response) {
+
+                if (response) {
+                    Notify("Kayıt işlemi başarılı", "success");
+
+                    setTimeout(function () {
+                        window.location.href = "/admin/Role/SignUp"
+                    }, 2000)
+                }
+                else {
+                    Notify(response, "error");
+                }
+
+            }).fail(function (response) {
+                Notify("İşlem sırasında bir sorun oluştu", "error");
+            })
+        }
+    }
+
+</script>
+
+

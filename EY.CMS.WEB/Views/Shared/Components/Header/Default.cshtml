@@ -1,0 +1,143 @@
+﻿@model EY.CMS.WEB.Models.HeaderViewModel
+
+
+
+<header id="home">
+    <nav class="navbar navbar-default  text-light navbar-sticky bootsnav">
+        <div class="container-fluid">
+            <div class="attr-nav">
+                <ul style="margin-right:50px">
+
+                    <li class="button"><a href="/?culture=tr-TR"><img src="/site/img/turkey.png" title="Turkish" width="30" height="30" /></a></li>
+                    <li class="button"><a href="/?culture=en-US" style="margin:0px 20px"><img src="/site/img/united.png" title="English" width="30" height="30" /></a></li>
+                    <li class="button"><a href="/?culture=ru-RU"><img src="/site/img/russia.png" title="Russian" width="30" height="30" /></a></li>
+                </ul>
+            </div>
+
+
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a href="/Anasayfa">
+                    <img src="/img/@Model.Setting?.Logo" width="200" class="logo" alt="senka-enerji">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <ul class="nav navbar-nav navbar-right" data-in="#" data-out="#">
+                    <li>
+                        <a href="/anasayfa?culture=@ViewBag.Culture" class="dropdown-toggle">@ViewBag.HomePage</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle smooth-menu" data-toggle="dropdown">@ViewBag.AboutUs</a>
+                        <ul class="dropdown-menu">
+                            @foreach (var item in Model.Pages)
+                            {
+                                if (ViewBag.Culture == "en-US")
+                                {
+                                    <li><a href="/sayfa/@item.SeoUrl?culture=@ViewBag.Culture">@item.NameEN</a></li>
+                                }
+                                else if (ViewBag.Culture == "ru-RU")
+                                {
+                                    <li><a href="/sayfa/@item.SeoUrl?culture=@ViewBag.Culture">@item.NameRU</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="/sayfa/@item.SeoUrl?culture=@ViewBag.Culture">@item.Name</a></li>
+                                }
+
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle smooth-menu" data-toggle="dropdown">@ViewBag.Products</a>
+                        <ul class="dropdown-menu">
+                            @foreach (var item in Model.Products.Where(x => x.ProductParentId == 0).ToList())
+                            {
+                                <li class="dropdown">
+
+                                    @if (ViewBag.Culture == "en-US")
+                                    {
+                                        <a class="@(Model.Products.Where(x => x.ProductParentId == item.Id).FirstOrDefault() != null ? "dropdown-toggle" : "")"
+                                   href="@(Model.Products.Where(x => x.ProductParentId == item.Id).FirstOrDefault() != null ? "#" : $"/urun-detay/{item.SeoUrl}?culture='{ViewBag.Culture}' ")">@item.ProductNameEN</a>
+                                    }
+                                    else if (ViewBag.Culture == "ru-RU")
+                                    {
+                                        <a class="@(Model.Products.Where(x => x.ProductParentId == item.Id).FirstOrDefault() != null ? "dropdown-toggle" : "")"
+                                   href="@(Model.Products.Where(x => x.ProductParentId == item.Id).FirstOrDefault() != null ? "#" : $"/urun-detay/{item.SeoUrl}?culture='{ViewBag.Culture}' ")">@item.ProductNameRU</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="@(Model.Products.Where(x => x.ProductParentId == item.Id).FirstOrDefault() != null ? "dropdown-toggle" : "")"
+                                   href="@(Model.Products.Where(x => x.ProductParentId == item.Id).FirstOrDefault() != null ? "#" : $"/urun-detay/{item.SeoUrl}?culture='{ViewBag.Culture}' ")">@item.ProductName</a>
+                                    }
+
+
+                                    @if (Model.Products.Where(x => x.ProductParentId == item.Id).FirstOrDefault() != null)
+                                    {
+                                        <ul class="dropdown-menu">
+                                            @foreach (var item2 in Model.Products.Where(x => x.ProductParentId == item.Id).ToList())
+                                            {
+                                                if (ViewBag.Culture == "en-US")
+                                                {
+                                                    <li><a href="/urun-detay/@item2.SeoUrl?culture=@ViewBag.Culture">@item2.ProductNameEN</a></li>
+                                                }
+                                                else if (ViewBag.Culture == "ru-RU")
+                                                {
+                                                    <li><a href="/urun-detay/@item2.SeoUrl?culture=@ViewBag.Culture">@item2.ProductNameRU</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a href="/urun-detay/@item2.SeoUrl?culture=@ViewBag.Culture">@item2.ProductName</a></li>
+                                                }
+
+                                            }
+                                        </ul>
+                                    }
+
+                                </li>
+
+                            }
+                        </ul>
+                        @*  @{
+
+                        void ShowTree(int? parentId)
+                        {
+                        var newNodes = Model.Products.Where(x => x.ProductParentId == parentId).ToList();
+
+                        if (newNodes.Count != 0)
+                        {
+                        <ul class="dropdown-menu animated">
+                        @foreach (var item in newNodes)
+                        {
+                        if (item != null)
+                        {
+                        <li class="dropdown">
+                        <a class="dropdown-toggle">
+                        @item.ProductName
+                        </a>
+                        @{
+                        ShowTree(item.Id);
+                        }
+                        </li>
+
+                        }
+                        }
+                        </ul>
+
+                        }
+                        }
+                        ShowTree(0);
+                        }*@
+
+                    </li>
+
+                    <li>
+                        <a href="/iletisim?culture=@ViewBag.Culture">@ViewBag.Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

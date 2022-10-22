@@ -1,0 +1,105 @@
+﻿@model EY.CMS.WEB.Models.HeaderViewModel
+
+<footer class="bg-dark text-light">
+    <div class="container">
+        <div class="f-items default-padding">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 single-item">
+                    <div class="f-item contact">
+                        <h4 class="widget-title">@ViewBag.Contact</h4>
+                        <p>
+
+                            <span>
+                                <i style="width: 40px;
+                              height: 40px;
+                              border: 1px solid;
+                              text-align: center;
+                              line-height: 40px;
+                              color: #32c36c;
+                              margin-right:15px" class="fas fa-location">
+                                </i>
+                            </span>
+                            <span>@Model.Setting.Address</span>
+
+                        </p>
+                        <ul>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <a href="tel:@Model.Setting.Phone1">@Model.Setting.Phone1 - </a>
+                                <a style="margin-left:5px" href="tel:@Model.Setting.Phone2">@Model.Setting.Phone2</a>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope-open"></i>
+                                @* <a href="mailto:@Model.Setting.Email">@Model.Setting.Email</a>*@
+                                <a href="mailto:senka@senkagrup.com">senka@senkagrup.com - </a>
+                                <a href="mailto:ahmetsen6261@gmail.com">ahmetsen6261@gmail.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 single-item">
+                    <div class="f-item link">
+                        <h4 class="widget-title">@ViewBag.Products</h4>
+                        <ul>
+                            @foreach (var item in Model.Products)
+                            {
+                                if (ViewBag.Culture == "en-US")
+                                {
+                                    <li>
+                                        <a href="#">@item.ProductNameEN</a>
+                                    </li>
+                                }
+                                else if (ViewBag.Culture == "ru-RU")
+                                {
+                                    <li>
+                                        <a href="#">@item.ProductNameRU</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="#">@item.ProductName</a>
+                                    </li>
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 single-item">
+                    <div class="f-item link">
+                        <h4 class="widget-title">@ViewBag.UsefulLinks</h4>
+                        <ul style="text-transform:uppercase">
+                            <li>
+                                <a href="#">@ViewBag.HomePage</a>
+                            </li>
+                            <li>
+                                <a href="/sayfa/sirket?culture=@ViewBag.Culture">@ViewBag.Company</a>
+                            </li>
+                            <li>
+                                <a href="/tumurunler?culture=@ViewBag.Culture">@ViewBag.Products</a>
+                            </li>
+
+                            <li>
+                                <a href="/iletisim?culture=@ViewBag.Culture">@ViewBag.Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 single-item">
+                    <div class="f-item link">
+                        <h4 class="widget-title"></h4>
+                        <div>
+                            <a href="skype:ahmetsen6261?chat"><img src="/site/img/skypeicon.png" width="32" height="32" /></a>
+                            <a href="https://t.me/ahmetsen6261" style="margin:0px 20px"><img src="/site/img/telegram.png" width="32" height="32" /></a>
+                            <a href="https://www.instagram.com/senka_energy"><img src="/site/img/instagram.png" width="32" height="32" /></a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center; font-size:16px; padding:20px 0px"><span>Copyright © 2022  Senka Energy Ltd.</span></div>
+</footer>

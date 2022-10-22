@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "RoleAssign";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+@model List<EY.CMS.CORE.DTOs.RoleAssignDto>
+<div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card mb-4">
+        <h6 class="card-header">Role Düzenle</h6>
+        <div class="card-body">
+
+            @foreach (var item in Model)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="@item.RoleName" id="@item.RoleId" @(item.Exist == true ? "checked" : "")>
+                    <label class="form-check-label" for="flexCheckDefault">
+                        @item.RoleName
+                    </label>
+                </div>
+
+            }
+
+            <button type="button" onclick="RoleAssing()" class="btn btn-primary">Kaydet</button>
+            <a href="/admin/role/users" class="btn btn-primary">Geri</a>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function RoleAssing() {
+
+        var myCheckboxes = [];
+        $('input[type=checkbox]').each(function () {
+            console.log("test")
+            myCheckboxes.push({ RoleName: $(this).attr("value"), Exist: $(this).prop("checked") });
+            // myCheckboxes.push($(this).attr("value"));
+
+        });
+
+        const data = {
+            roleAssignViewModels: myCheckboxes,
+        }
+
+        $.ajax({
+            url: "/admin/role/RoleAssign",
+            type: "POST",
+            data: data
+        }).then(function (response) {
+
+            if (response) {
+                Notify("Kayıt işlemi başarılı", "success");
+
+                setTimeout(function () {
+                    window.location.href = "/admin/role/users"
+                }, 2000)
+            }
+            else {
+                Notify(response, "error");
+            }
+
+        }).fail(function (response) {
+            Notify(response, "error");
+        })
+
+    }
+
+</script>

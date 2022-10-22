@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+
+@model List<EY.CMS.CORE.DTOs.PageDto>
+<div class="container-fluid flex-grow-1 container-p-y">
+    <h4 class="font-weight-bold py-3 mb-0">Sayfalar</h4>
+    <div class="text-muted small mt-0 mb-4 d-block breadcrumb">
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center m-l-0">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <a href="/admin/page/Added" class="btn btn-success btn-sm mb-3 btn-round"><i class="feather icon-plus"></i> Ekle</a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-bordered table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Sayfa Adı</th>
+                                    <th>Seo Url</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.SeoUrl</td>
+                                        <td>@item.MetaTitle</td>
+                                        <td>@item.MetaDescription</td>
+                                        <td>
+                                            <a href="/admin/page/edit/@item.Id" class="btn btn-warning btn-sm"><i class="feather icon-plus"></i>&nbsp;Düzenle </a>
+                                            <a href="/admin/page/delete/@item.Id" class="btn btn-warning btn-sm"><i class="feather icon-edit"></i>&nbsp;Sil </a>
+
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section dataTable{
+<script>
+    $('#dataTable').dataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                text: 'excel indir',
+                messageTop: 'Hizmetler'
+            },
+            {
+                extend: 'pdf',
+                text: 'pdf indir',
+                messageTop: 'Sayfalar'
+            }
+        ]
+    });
+</script>
+}
+
+
+
+

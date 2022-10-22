@@ -1,0 +1,108 @@
+﻿.all-product {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+}
+
+.navbar-right {
+    /*float: right !important;*/
+    margin-right: 300px;
+}
+
+.shadow.dark::after {
+    background: unset;
+}
+
+.services-style-six {
+    z-index: unset;
+}
+
+.ui-builder {
+    display: none !important;
+}
+
+nav.navbar.bootsnav .container-fluid .navbar-brand {
+    background: white;
+}
+
+     nav.navbar.bootsnav .container-fluid .navbar-brand::after {
+        background: unset;
+        box-shadow: unset
+    }
+    nav.navbar.bootsnav .container-fluid .navbar-brand::after {
+        background: white;
+        box-shadow: white
+    }
+
+nav.navbar.bootsnav ul.nav > li > a {
+    font-size: 18px;
+    color: black;
+}
+
+    nav.navbar.bootsnav ul.nav > li > a:hover {
+        color: black;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+.banner-area, .banner-area div {
+    height: 50vh;
+}
+
+.bg-dark {
+    background: #0f71b8 none repeat scroll 0 0 !important;
+}
+
+.btn-dark.theme {
+    background-color: #0f71b8;
+    color: #ffffff;
+}
+
+a {
+    font-family: 'Font Awesome 5 Pro';
+}
+
+/*.container-fluid {
+    background-color: #3baa34;
+}
+*/
+.gallery-area .gallery-items .pf-item .overlay:before {
+    position: unset;
+}
+
+.gallery-area .gallery-items .pf-item .overlay:after {
+    position: unset;
+}
+
+.energy .projects-area .info ul {
+    background: #3baa34;
+}
+
+.energy .clients-area.default-padding.bg-dark.text-light::after {
+    background: #3baa34;
+}
+
+/*@media (max-width: 1023px) {
+    nav.navbar.bootsnav .navbar-toggle {
+        display: inline-block;
+        float: inherit;
+        margin-right: -330px;
+        margin-top: 25px;
+    }
+}
+.contact-area .contact-items .item a {
+    font-weight: 400;
+    color: #666666;
+    display: inline-block;
+    width: 282px;
+}*/
+
+    .navbar.navbar-default .container-fluid .attr-nav > ul > li.button a {
+        border-radius: inherit;
+        padding: 37px 0px !important;
+        text-transform: capitalize;
+        background: #fff !important;
+        color: #ffffff !important;
+        font-size: 16px;
+        clip-path: inherit;
+    }

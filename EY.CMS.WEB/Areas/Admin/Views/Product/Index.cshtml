@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+@model List<EY.CMS.CORE.DTOs.ProductDto>
+<div class="container-fluid flex-grow-1 container-p-y">
+    <h4 class="font-weight-bold py-3 mb-0">Ürünler</h4>
+    <div class="text-muted small mt-0 mb-4 d-block breadcrumb">
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center m-l-0">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <a href="/admin/product/Added" class="btn btn-success btn-sm mb-3 btn-round"><i class="feather icon-plus"></i> Ekle</a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-bordered table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Resim</th>
+                                    <th>Ürün Adı</th>
+                                    <th>Seo Url</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if(item.Image != null){
+                                            <img src=~/img/product_img/@item.Image width="50" height="50" style="border-radius:30px" />
+                                            }
+                                            else{
+                                            <img src=~/img/noImage.jpg width="50" height="50" style="border-radius:30px" />
+                                            }
+                                        </td>
+                                        <td>@item.ProductName</td>
+                                        <td>@item.SeoUrl</td>
+                                        <td>
+                                            <a href="/admin/product/edit/@item.Id" class="btn btn-warning btn-sm"><i class="feather icon-plus"></i>&nbsp;Düzenle </a>
+                                            <a href="/admin/product/delete/@item.Id" class="btn btn-warning btn-sm"><i class="feather icon-edit"></i>&nbsp;Sil </a>
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section dataTable{
+    <script>
+        $('#dataTable').dataTable({
+
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: 'excel indir',
+                    messageTop: 'Ürünler'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'pdf indir',
+                    messageTop: 'Ürünler'
+                }
+            ]
+        });
+    </script>
+}

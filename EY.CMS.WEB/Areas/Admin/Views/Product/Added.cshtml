@@ -1,0 +1,168 @@
+﻿@{
+    ViewData["Title"] = "Added";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+@model List<EY.CMS.CORE.DTOs.ProductDto>
+
+<div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card mb-4">
+        <h6 class="card-header">Ekle</h6>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="form-label">Ürün Kategori</label>
+                    <select class="custom-select" id="ProductParentId">
+                        <option value="-1">Kategori Seçiniz</option>
+                        <option value="0">Ana Kategori</option>
+                        @foreach (var item in Model)
+                        {
+                            if (item.ProductParentId == 0)
+                            {
+                                <option value="@item.Id">Anakategori / @item.ProductName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.ProductName</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Ürün Adı</label>
+                    <input type="text" class="form-control" id="ProductName">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Ürün Adı İngilizce</label>
+                    <input type="text" class="form-control" id="ProductNameEN">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Ürün Adı Rusça</label>
+                    <input type="text" class="form-control" id="ProductNameRU">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Seo Url</label>
+                    <input type="text" class="form-control" id="SeoUrl">
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label class="form-label">Resim</label>
+                    <input type="file" class="form-control" id="File">
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label class="form-label">Banner Resim</label>
+                    <input type="file" class="form-control" id="FileBanner">
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="form-label">İçerik</label>
+                    <textarea name="Text" id="Text" class="form-control"></textarea>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-12">
+                    <label class="form-label">Text İngilizce</label>
+                    <textarea name="Text" id="TextEN" class="form-control"></textarea>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-12">
+                    <label class="form-label">Text Rusça</label>
+                    <textarea name="Text" id="TextRU" class="form-control"></textarea>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <button type="button" onclick="ProductAdded()" class="btn btn-primary">Kaydet</button>
+            <a href="/admin/product" class="btn btn-primary">Geri</a>
+        </div>
+    </div>
+</div>
+<script>
+    function ProductAdded(){
+        var productParentId = $("#ProductParentId").val();
+        var productName = $("#ProductName").val();
+        var productNameEN = $("#ProductNameEN").val();
+        var productNameRU = $("#ProductNameRU").val();
+        var seoUrl = $("#SeoUrl").val();
+        var fileUpload = $("#File").get(0);
+        var files = fileUpload.files;
+        var fileUploadBanner = $("#FileBanner").get(0);
+        var filesBanner = fileUploadBanner.files;
+        var text =CKEDITOR.instances['Text'].getData();
+        var textEN =CKEDITOR.instances['TextEN'].getData();
+        var textRU =CKEDITOR.instances['TextRU'].getData();
+
+        if (productParentId == -1) {
+            Notify("Ürün kategori seçiniz", "error");
+            return;
+        }
+        if (productName =="") {
+            Notify("Ürün adını giriniz", "error");
+            return;
+        }
+        if (seoUrl =="") {
+            Notify("Seo url giriniz", "error");
+            return;
+        }
+
+        else {
+            formData = new FormData();
+
+            formData.append("ProductParentId", productParentId);
+            formData.append("ProductName", productName);
+            formData.append("productNameEN", productNameEN);
+            formData.append("productNameRU", productNameRU);
+            formData.append("file", files[0]);
+            formData.append("fileBanner", filesBanner[0]);
+            formData.append("SeoUrl", seoUrl);
+            formData.append("Text", text);
+            formData.append("TextEN", textEN);
+            formData.append("TextRU", textRU);
+
+            $.ajax({
+                url: "/admin/product/ProductSave",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData
+
+            }).then(function (response) {
+
+                if (response) {
+                    Notify("Kayıt işlemi başarılı", "success");
+
+                    setTimeout(function () {
+                        window.location.href = "/admin/product/added"
+                    }, 2000)
+                }
+
+            }).fail(function (response) {
+                  Notify("İşlem sırasında hata meydana geldi", "error");
+            })
+        }
+    }
+        let name = document.querySelector("#ProductName");
+        let seoUrl = document.querySelector("#SeoUrl");
+
+        name.addEventListener("keyup", SeoUrlCreated)
+        function SeoUrlCreated(e) {
+            seoUrl.value = SeoUrlCreated(e.target.value);
+        }
+</script>
+@section Scripts{
+<script src="~/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('Text')
+    CKEDITOR.replace('TextEN')
+    CKEDITOR.replace('TextRU')
+</script>
+}
+
+

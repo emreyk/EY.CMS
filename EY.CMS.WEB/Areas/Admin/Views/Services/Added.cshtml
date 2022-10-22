@@ -1,0 +1,137 @@
+﻿@{
+    ViewData["Title"] = "Added";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+<div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card mb-4">
+        <h6 class="card-header">Ekle</h6>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="form-label">Hizmet Adı</label>
+                    <input type="text" class="form-control" id="Name">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Seo Url</label>
+                    <input type="text" class="form-control" id="SeoUrl">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" id="Title">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Başlık</label>
+                    <input type="text" class="form-control" id="Description">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Açıklama</label>
+                    <input type="text" class="form-control" id="ShortText">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Resim</label>
+                    <input type="file" class="form-control" id="File">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-12">
+                    <label class="form-label">Text</label>
+                    <textarea name="Text" id="Text" class="form-control"></textarea>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <button type="button" onclick="ServiceAdded()" class="btn btn-primary">Kaydet</button>
+            <a href="/admin/services" class="btn btn-primary">Geri</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function ServiceAdded() {
+        var fileUpload = $("#File").get(0);
+        var files = fileUpload.files;
+
+        var name = $("#Name").val();
+        var title = $("#Title").val();
+        var seoUrl = $("#SeoUrl").val();
+        var description = $("#Description").val();
+        var shortText = $("#ShortText").val();
+        var text =CKEDITOR.instances['Text'].getData();
+
+        if (name == "") {
+
+            Notify("Hizmet adını giriniz", "error");
+            return;
+        }
+
+        if (seoUrl == "") {
+            Notify("Seourl giriniz", "error");
+            return;
+        }
+        if (description == "") {
+            Notify("Açıklama giriniz", "error");
+            return;
+        }
+
+        else {
+             formData = new FormData();
+
+            formData.append("file", files[0]);
+            formData.append("Name", name);
+            formData.append("SeoUrl", seoUrl);
+            formData.append("Title", title);
+            formData.append("Description", description);
+            formData.append("ShortText", shortText);
+            formData.append("Text", text);
+            $.ajax({
+                url: "/admin/services/ServiceSave",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData
+            }).then(function (response) {
+
+                if (response) {
+                    Notify("Kayıt işlemi başarılı", "success");
+
+                    setTimeout(function () {
+                        window.location.href = "/admin/services/added"
+                    }, 2000)
+                }
+                else{
+                     Notify("İşlem sırasında bir sorun oluştu", "error");
+                }
+
+            }).fail(function (response) {
+                 Notify("İşlem sırasında bir sorun oluştu", "error");
+            })
+
+
+        }
+
+    }
+
+    let name = document.querySelector("#Name");
+    let seoUrl = document.querySelector("#SeoUrl");
+
+    name.addEventListener("keyup", SeoUrlCreated)
+    function SeoUrlCreated(e) {
+        seoUrl.value = SeoUrlCreated(e.target.value);
+    }
+</script>
+@section Scripts{
+<script src="~/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('Text')
+</script>
+}
+
+
+

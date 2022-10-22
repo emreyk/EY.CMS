@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<EY.CMS.CORE.DTOs.ProductDto>
+
+@if (ViewBag.SeoUrl == "yakit-urunleri")
+{
+    <div class="breadcrumb-area gradient-bg bg-cover shadow dark text-light text-center" style="background-image: url(/site/img/yakit.jpg);">
+    </div>
+}
+else
+{
+    <div class="breadcrumb-area gradient-bg bg-cover shadow dark text-light text-center" style="background-image: url(/site/img/tup.jpg);">
+    </div>
+}
+
+<!-- End Breadcrumb -->
+<!-- Start Gallery
+============================================= -->
+<div class="gallery-area default-padding">
+    <div class="container-full">
+        <div class="row">
+            <div class="col-md-12 gallery-content">
+                <div class="magnific-mix-gallery masonary">
+                    <div id="portfolio-grid" class="gallery-items colums-4">
+
+                        @foreach (var item in Model)
+                        {
+                            if (ViewBag.Culture == "en-US")
+                            {
+                                <div class="pf-item">
+                                    <div class="overlay">
+                                        <img src="/img/product_img/@item.BannerImage" alt="thumb" width="330" height="232">
+                                        <div class="content">
+                                            <div class="title">
+                                                <h5><a href="/urun-detay/@item.SeoUrl?culture=@ViewBag.Culture">@item.ProductNameEN</a></h5>
+                                            </div>
+                                            <a href="/urun-detay/@item.SeoUrl?culture=@ViewBag.Culture"><i class="fas fa-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else if (ViewBag.Culture == "ru-RU")
+                            {
+                                <div class="pf-item">
+                                    <div class="overlay">
+                                        <img src="/img/product_img/@item.BannerImage" alt="thumb" width="330" height="232">
+                                        <div class="content">
+                                            <div class="title">
+                                                <h5><a href="/urun-detay/@item.SeoUrl?culture=@ViewBag.Culture">@item.ProductNameRU</a></h5>
+                                            </div>
+                                            <a href="/urun-detay/@item.SeoUrl?culture=@ViewBag.Culture"><i class="fas fa-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="pf-item">
+                                    <div class="overlay">
+                                        <img src="/img/product_img/@item.BannerImage" alt="thumb" width="330" height="232">
+                                        <div class="content">
+                                            <div class="title">
+                                                <h5><a href="/urun-detay/@item.SeoUrl?culture=@ViewBag.Culture">@item.ProductName</a></h5>
+                                            </div>
+                                            <a href="/urun-detay/@item.SeoUrl?culture=@ViewBag.Culture"><i class="fas fa-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+@model EY.CMS.CORE.DTOs.AppRoleDto
+<div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card mb-4">
+        <h6 class="card-header">Düzenle</h6>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="form-label">Role Adı</label>
+                    <input type="text" class="form-control" id="Name" value="@Model.Name">
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <button type="button" onclick="RoleEdit()" class="btn btn-primary">Kaydet</button>
+            <a href="/admin/role" class="btn btn-primary">Geri</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function RoleEdit() {
+
+        var name = $("#Name").val();
+        if (name == "") {
+            Notify("Role adını giriniz", "error");
+            return;
+        }
+        else {
+            const data={
+                Name : name,
+            }
+
+            $.ajax({
+                url: "/admin/role/RoleEdit",
+                type: "POST",
+                data: data
+            }).then(function (response) {
+
+                if (response) {
+                    Notify("Kayıt işlemi başarılı", "success");
+
+                    setTimeout(function () {
+                        window.location.href = "/admin/role"
+                    }, 2000)
+                }
+                else{
+                     Notify(response, "error");
+                }
+
+            }).fail(function (response) {
+                 Notify(response, "error");
+            })
+
+        }
+
+    }
+
+</script>
+

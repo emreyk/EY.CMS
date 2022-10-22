@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Added";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+@model EY.CMS.CORE.DTOs.BlogViewModel
+
+<div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card mb-4">
+        <h6 class="card-header">Düzenle</h6>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" id="Title" value="@Model.BlogWithCategory.Title">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Seo Url</label>
+                    <input type="text" class="form-control" id="SeoUrl" value="@Model.BlogWithCategory.SeoUrl">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Kısa Açıklama</label>
+                    <input type="text" class="form-control" id="Description" value="@Model.BlogWithCategory.Description">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Görsel</label>
+                    <img src=~/img/blog_img/@Model.BlogWithCategory.Image width="100" height="100" />
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Resim</label>
+                    <input type="file" class="form-control" id="File">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-label">Kategori</label>
+                    <select class="custom-select" id="category">
+                        <option value="0">Kategori Seçiniz</option>
+                        @foreach (var item in Model.BlogCategories)
+                        {
+                            <option @(item.Id ==Model.BlogWithCategory.Blog_CategoryId ? "selected" : "") value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-md-12">
+                    <label class="form-label">İçerik</label>
+                    <textarea name="Text" id="Text" class="form-control">@Model.BlogWithCategory.Text</textarea>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <button type="button" onclick="BlogEdit()" class="btn btn-primary">Kaydet</button>
+            <a href="/admin/blog" class="btn btn-primary">Geri</a>
+        </div>
+    </div>
+</div>
+
+<script>
+     function BlogEdit() {
+        var seoUrl = $("#SeoUrl").val();
+        var title = $("#Title").val();
+        var description = $("#Description").val();
+        var fileUpload = $("#File").get(0);
+        var files = fileUpload.files;
+        var text =CKEDITOR.instances['Text'].getData();
+        var category = $("#category").val();
+
+        if (title == "") {
+            Notify("Title giriniz", "error");
+            return;
+        }
+        if (description =="") {
+            Notify("Kısa açıklama giriniz", "error");
+            return;
+        }
+        if (category == 0) {
+            Notify("Kategori seçiniz", "error");
+            return;
+        }
+        if (text =="") {
+            Notify("İçerik giriniz", "error");
+            return;
+        }
+
+
+        else {
+            formData = new FormData();
+
+            formData.append("file", files[0]);
+            formData.append("Title", title);
+            formData.append("Description", description);
+            formData.append("SeoUrl", seoUrl);
+            formData.append("Text", text);
+            formData.append("Blog_CategoryId", category);
+
+            $.ajax({
+                url: "/admin/blog/BlogEdit",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData
+
+            }).then(function (response) {
+
+                if (response) {
+                    Notify("Kayıt işlemi başarılı", "success");
+
+                    setTimeout(function () {
+                        window.location.href = "/admin/blog"
+                    }, 2000)
+                }
+
+            }).fail(function (response) {
+                  Notify("İşlem sırasında hata meydana geldi", "error");
+            })
+        }
+
+    }
+
+    let name = document.querySelector("#Title");
+    let seoUrl = document.querySelector("#SeoUrl");
+
+    name.addEventListener("keyup", SeoUrlCreated)
+    function SeoUrlCreated(e) {
+        seoUrl.value = SeoUrlCreated(e.target.value);
+    }
+</script>
+
+@section Scripts{
+<script src="~/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('Text')
+</script>
+}
+
+

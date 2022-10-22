@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewData["Title"] = "Added";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+<div class="container-fluid flex-grow-1 container-p-y">
+    <div class="card mb-4">
+        <h6 class="card-header">Ekle</h6>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="form-label">Kategori Adı</label>
+                    <input type="text" class="form-control" id="Name">
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <button type="button" onclick="CategoryAdded()" class="btn btn-primary">Kaydet</button>
+            <a href="/admin/blogcategory" class="btn btn-primary">Geri</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function CategoryAdded() {
+    
+        var name = $("#Name").val();
+        if (name == "") {
+            Notify("Kategori adını giriniz", "error");
+            return;
+        }
+
+        else {
+            const data={
+                Name : name,
+            } 
+
+            $.ajax({
+                url: "/admin/BlogCategory/CategorySave",
+                type: "POST",
+                data: data
+            }).then(function (response) {
+
+                if (response) {
+                    Notify("Kayıt işlemi başarılı", "success");
+
+                    setTimeout(function () {
+                        window.location.href = "/admin/BlogCategory/added"
+                    }, 2000)
+                }
+                else{
+                     Notify("İşlem sırasında bir sorun oluştu", "error");
+                }
+
+            }).fail(function (response) {
+                 Notify("İşlem sırasında bir sorun oluştu", "error");
+            })
+
+        }
+
+    }
+
+</script>
+
+
